@@ -53,14 +53,27 @@ app.get('/for-hire',(req,res)=>{
 //   MongoClient.connect(url)
 //   .then(function(db){
 //     return db.collection("users")
-//     find({job: {$ne: null}}).toArray(
-//     function(err,doc){
-//       console.log(doc);
-//         res.render("users",{users: doc})
+//     .find({job}).toArray(
+//       function(err,doc){
+//         console.log(doc);
+//         res.render("users",{users:doc})
+//       })
+//       db.close();
 //     })
-//     db.close();
-//   })
-// });
+//   });
+
+app.get('/employed-robots',(req,res)=>{
+  MongoClient.connect(url)
+  .then(function(db){
+    return db.collection("users")
+    find({job: {$ne: null}}).toArray(
+    function(err,doc){
+      console.log(doc);
+        res.render("users",{users: doc})
+    })
+    db.close();
+  })
+});
 
 app.listen(3000, function(){
   console.log("This is going so well!");
