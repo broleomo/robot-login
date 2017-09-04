@@ -36,6 +36,17 @@ app.get('/login',(req,res)=>{
     }
   );
 
+  app.get("/users/:username", function(req, res){
+  MongoClient.connect(url, function(err, db){
+    var users = db.collection("users");
+    users.findOne({username: req.params.username}).then(function(docs) {
+      console.log(docs);
+      res.render('user', docs)
+    });
+    db.close();
+  });
+});
+
 app.get('/for-hire',(req,res)=>{
   MongoClient.connect(url)
   .then(function(db){
@@ -66,7 +77,7 @@ app.get('/employed-robots',(req,res)=>{
   MongoClient.connect(url)
   .then(function(db){
     return db.collection("users")
-    find({job: {$ne: null}}).toArray(
+    .find({job: {$ne: null}}).toArray(
     function(err,doc){
       console.log(doc);
         res.render("users",{users: doc})
